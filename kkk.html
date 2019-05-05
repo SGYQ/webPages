@@ -1,0 +1,115 @@
+1.集合在页面循环显示，点击某一行时，获取当前行的参数，弹框显示，或者进行其他操作
+2.方法一 ：下面这种适合点击某个按钮触发事件，获取某一行  关键数据，进行其他的操作
+	前端数据   ，其中 id="${x.index+1}"  是用来区别每一行
+				<table id="datatable-responsive"
+						class="table table-striped table-bordered dt-responsive nowrap"
+						style="text-align: center;" cellspacing="0" width="100%">
+						<thead>
+							<tr
+								style="background-color: #4B5F71; border-color: #364B5F; color: #E9EDEF">
+								<th>序号</th>
+								<th>角色名称</th>
+								<th>角色关联的权限信息</th>
+								<th>备注</th>
+								<th style="display: none">角色id</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${list }" var="list" varStatus="x" begin="0">
+								<tr>
+									<td class="td">${x.index+1}</td>
+									<td class="td">${list.name}</td>
+									<td><a href="javascript:void(0)" 
+										onclick="editUser(this)"  id="${x.index+1}"
+										class="btn btn-success">编辑</a></td>
+									<td class="td">${list.remark}</td>
+									<td style="display: none" class="td">${list.id}</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+ 
+ 
+ 
+ 
+3.点击编辑，获取当前行的数据，通过ajax 查询其他数据，返回页面弹框显示
+	function editUser(obj) {
+		$(".menu").prop("checked", false);//取消	全选   
+		var id = $(obj).attr("id");  //获取当前行的对象  id属性
+		var ids = document.getElementById("datatable-responsive").rows[id].cells[0].innerText; //获取当前行的第一列值
+		var sname = document.getElementById("datatable-responsive").rows[id].cells[1].innerText;//获取当前行的第二列值
+		var status = document.getElementById("datatable-responsive").rows[id].cells[3].innerText;//获取当前行的第四列值
+		var jueseid = document.getElementById("datatable-responsive").rows[id].cells[4].innerText;//获取当前行的第五列值
+		//根据当前行的角色id 查询信息
+		$.ajax({
+			type : "POST",
+			data : {
+				"id" : jueseid
+			},
+			dataType : "json",
+			url : "menubyroleid",
+			success : function(data) {
+				
+				var $elements = $('.menu');
+				var len = $elements.length;
+				$("#juesename").val(sname); //角色姓名
+				$("#remark").val(status);      //角色备注
+				$("#jueseid").val(jueseid);      //角色id
+				//返回的数据是集合，通过for循环赋值
+				for (var i = 0; i < len; i++) {
+					for ( var v in data.rolelist) {
+						var ye = $(".menu:eq('" + i + "')").val();//页面值
+						var hou = data.rolelist[v].menu_id;//后台获取值
+						if (ye == hou) {   //二值比对
+							
+							$(".menu:eq('" + i + "')").prop("checked", true);
+						}
+					}
+				}
+				
+				$('#edit').modal('show'); //弹出框 使用到的是bootstrap 的模态框
+			}
+		});
+	}
+4.方法二：点击某一行的任何地方，弹框显示，或者进行其他操作
+					<tbody id="sbsb">
+						<c:forEach items="${list }" var="list" varStatus="x" begin="0">
+								<tr onclick="ti('${list.task_id}')">
+ 
+ 
+									<td style="width: 20px">${x.index+1}</td>
+									<td style="width: 70px">${list.oname}</td>
+									<td style="width: 70px">${list.rname}</td>
+									<td style="width: 70px">${list.rtype}</td>
+									<td style="width: 60px">${list.rpaydirectly }</td>
+									<td style="width: 50px">${list.t_user }</td>
+									
+								</tr>
+							</c:forEach>
+						</tbody>							
+	//触发的事件
+	function ti(task_id) {
+ 		//查询详细
+		$.ajax({
+			type : "POST",
+			data : {
+				"task_id" : task_id
+			},
+			dataType : "json",
+			url : "sendresultdetailsee",
+			success : function(data) {
+				$("#report_number").val(data.report_number);
+				$("#danger_time").val(data.danger_time);
+				$("#car_no").val(data.car_no);
+				$("#linkman").val(data.linkman);
+				$("#danger_address").val(data.danger_address);
+				$("#report_person").val(data.report_person);
+				$("#report_tel").val(data.report_tel);
+				$("#textarea").val(data.status);
+				$('#detail').modal('show'); //模态框
+				
+			}
+		});
+ 
+ 
+	}

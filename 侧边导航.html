@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>侧边导航条--尝试</title>
+    <link rel="stylesheet" type="text/css"  href="bootstrap-3.3.4-dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <!-- 顶部 start -->
+    <div class="row">
+        <div class="col-md-12">
+            <h3 style="border:1px solid red;">车辆管理与模拟定位</h3>
+        </div>
+    </div>
+    <hr/>
+    <!-- end  顶部 -->
+
+    <!-- 导航条 start -->
+    <div class="row">
+        <div class="col-md-3" style="border: 1px solid red;">
+            <nav class="navbar navbar-default" >
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active"><a href="#">Home</a></li>
+                    <li role="presentation"><a href="m3.html" target="mainArea">司机信息管理</a></li>
+                    <li role="presentation"><a href="#">货物信息管理</a></li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-9" style="border:1px solid red;" >
+            <iframe>
+                    <frame  name="mainArea"></frame>
+            </iframe> 
+            <!-- <span id="mainArea" name="mainArea"></span> -->
+        </div>
+    </div>
+    <!-- end  导航条  -->
+    
+
+    
+    <script src="jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

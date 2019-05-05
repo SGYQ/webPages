@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>主页</title>
+   <style>
+    #content{
+        display: none;
+        background:#eee;
+        margin:10px 0;
+        width:350px;
+    }
+    
+    /*俩样式不可隔开*/
+    #content.act{background: #555; border:1px solid red;}
+   </style>
+</head>
+<body>
+    <button id="btn">点击隐藏/展开一个div</button>
+    <div id="content">
+        部分内容，然后是主要内容
+        <h3>标题</h3>
+    </div>
+    <!--  -->
+    <script type="text/javascript" src="jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        var card = $("#content");
+
+        $("#btn").on('click',
+        function(){
+            if( $("#content").is(":visible") )
+                $("#content").slideUp();
+            else
+                $("#content").slideDown();
+        });
+
+        //鼠标移入DIV，添加样式act
+        card.on('mouseenter',function(){
+            card.addClass('act');
+        });
+        //鼠标离开，去除样式act
+        $("#content").on('mouseleave',function(){
+            $("#content").removeClass('act');
+        });
+    </script>
+</body>
+</html>
